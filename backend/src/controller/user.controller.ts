@@ -50,4 +50,12 @@ export default class UserController {
           }
     }
 
+    async logout(req: any) {
+      req.user.tokens = req.user.tokens.filter((token)=>{
+        return token.token != req.token
+    })
+
+    return await req.user.save()
+  }
+
 }
