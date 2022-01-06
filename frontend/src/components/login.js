@@ -14,11 +14,11 @@ function Login() {
                             <form className="form">
                                 <h3 className="text-center text-info">Login</h3>
                                 <div className="form-group">
-                                    <label for="username" className="text-info">Email:</label><br/>
+                                    <label htmlFor="username" className="text-info">Email:</label><br/>
                                     <input type="text"  className="form-control"/>
                                 </div>
                                 <div className="form-group">
-                                    <label for="password" className="text-info">Password:</label><br/>
+                                    <label htmlFor="password" className="text-info">Password:</label><br/>
                                     <input type="password"  className="form-control"/>
                                 </div>
                                 <div className="form-group"><br/>

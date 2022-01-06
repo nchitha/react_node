@@ -38,24 +38,46 @@ export default class UserController {
             where:  { email: body.email },
           });
           if(user.checkIfUnencryptedPasswordIsValid(body.password)){
-              const token1 = user.generateAuthToken();
-              const token = new Token();
-                token.token = token1;
-                await this.tokenRepository.save(token);
-                user.token=[token];
-                 this.userRepository.save(user);
-              return {user,token}
-          }else{
-            throw new Error('Unable to login')
-          }
+            const token1 = user.generateAuthToken();
+            const token = new Token();
+              token.token = token1;
+              await this.tokenRepository.save(token);
+              user.token=[...user.token,token];
+               this.userRepository.save(user);
+            return {user,token}
+        }else{
+          throw new Error('Unable to login')
+        }
     }
 
     async logout(req: any) {
-      req.user.tokens = req.user.tokens.filter((token)=>{
-        return token.token != req.token
-    })
+        // req.user.token = req.user.token.filter((token)=>{
+        //     return token.token != req.token
+        // })
+        this.tokenRepository.
+        createQueryBuilder().
+        delete()
+        .from(Token)
+        .where("id = :id", { id:req.user.token[0].id })
+        .execute();
 
-    return await req.user.save()
+       return {}
+    
   }
+
+  async logoutAll(req: any) {
+    // req.user.token = req.user.token.filter((token)=>{
+    //     return token.token != req.token
+    // })
+    req.user.token=[];
+
+    return await  this.tokenRepository.
+    createQueryBuilder().
+    delete()
+    .from(Token)
+    .where("userId = :id", { id:req.user.id })
+    .execute();
+
+}
 
 }

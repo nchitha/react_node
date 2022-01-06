@@ -39,7 +39,7 @@ router.post("/api/user", async (req, res, next) => {
     }
   });
 
-  router.post('/api/users/logout',auth, async (req, res)=>{
+  router.post('/api/logout',auth, async (req, res)=>{
     try {
       const clientController = new UserController();
       const response = await clientController.logout(req);
@@ -52,15 +52,16 @@ router.post("/api/user", async (req, res, next) => {
     }
 })
 
-router.post('/api/users/logoutAll',auth, async (req, res)=>{
-    try{
-        req.user.tokens = []
-
-        await req.user.save()
-        res.send()
-    }catch(e){
-        console.log(e);
-        res.status(500).send()
-    }
+router.post('/api/logoutAll',auth, async (req, res)=>{
+  try {
+    const clientController = new UserController();
+    const response = await clientController.logoutAll(req);
+    return res.status(200).json(response);
+  }
+  catch (error) {
+    //next(error)
+    console.log(error);
+    res.status(500).send({error:error.message});
+  }
 })
   export default router;

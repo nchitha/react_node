@@ -8,7 +8,7 @@ const auth  = async (req, res, next) =>{
     try{
         const token = req.header('Authorization').replace('Bearer ','')
         const decoded = jwt.verify(token,'jwttoken')
-        console.log(token);
+        //console.log(token);
         const user = await getRepository(User)
           .createQueryBuilder("user")
     .leftJoinAndSelect("user.token", "token")
